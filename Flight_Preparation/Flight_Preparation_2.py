@@ -1,5 +1,5 @@
-
-import ..\Useful_Fonctions\Distance
+import sys
+sys.path.append('Users/lancelotribot/Documents/Python/Useful/Distance.py')
 import math
 #Calculation of the time between two airports and the fuel needed
 
