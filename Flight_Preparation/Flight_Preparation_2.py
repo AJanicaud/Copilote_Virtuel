@@ -1,4 +1,5 @@
-import Distance
+
+import ..\Useful_Fonctions
 import math
 #Calculation of the time between two airports and the fuel needed
 
