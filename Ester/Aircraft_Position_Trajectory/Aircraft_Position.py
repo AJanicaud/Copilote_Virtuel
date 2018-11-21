@@ -1,11 +1,10 @@
 """
-Here are described the different functions that determine and show the position of the aircraft.
+Here are described the different functions that determine the position of the aircraft.
 """
 import math
-import numpy as np
-import matplotlib.pyplot as plt
-import haversine
-
+import sys
+sys.path.insert(0,'../Useful_Functions')
+import Distance
 
 def direction (pos_ant, pos_dest):
     """ 
@@ -28,7 +27,7 @@ def direction (pos_ant, pos_dest):
 
 def position (pos_ant,dir,v):
     """ 
-    The function calculates the position (long, lat) of the aircraft every 1s
+    The function calculates the position (long, lat) of the aircraft every 1s.
     Param:
     1) pos_ant (list of two terms, º): [long, lat] of the last position.
     2) dir (float, º): direction of the aircraft.
@@ -55,27 +54,16 @@ def save_position(l_pos,pos):
     """
     l_pos.append(pos)
     return l_pos
-
-def represent(l_pos):
-    """ 
-    The function represents the different positions of the aircraft in red and the last one in black. Origin: LASBORDES (lat: 43.588º; long: 1.499º)
-    Param: l_pos: list of [long,lat] of the different positions of the aircraft.
-    Return: the plot with the different positions of the aircraft.
-    """
-    x=[]
-    y=[]
-    lat0=43.588
-    long0=1.499
-    for pos in l_pos[:-1]:
-        x.append(pos[1]-long0)
-        y.append(pos[0]-lat0)
-    plt.plot(x,y,'go')
-    n_x=l_pos[len(l_pos)-1][1]-long0
-    n_y=l_pos[len(l_pos)-1][0]-lat0
-    plt.plot(n_x,n_y,'ro')
-    plt.show()
     
 def mean_time_travel(af_dep,af_arr,v):
-    distance=haversine.distance(af_dep,af_arr)
+    """ 
+    The function determines the time between two coordinates knowing the velocity
+    Param:  
+    1) af_dep: [long,lat] of the departure airfield.
+    2) af_arr: [long,lat] of the arrival airfield.
+    3) v: float of the aircraft velocity in km/h.
+    Return: the time between the two coordinates in hours.
+    """
+    distance=Distance.distance(af_dep,af_arr)
     return distance/v #in hours
             
