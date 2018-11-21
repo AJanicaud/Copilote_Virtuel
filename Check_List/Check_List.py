@@ -49,10 +49,27 @@ names_cl = check_lists.sheet_names()
 
 
 
+"""
+Function : next_window
+           Allows the interface to switch to the next task when the current task is completed
+@param : int i
+@return : void
+        prints on the interface
+"""
+def my_func(compteur,n, prev_task, current_task, comment, next_task, current_cl):
 
-def callback ():
-    print('good')
-
+     if (compteur.get()<n):
+         compteur.set(compteur.get()+1)
+         i = int(compteur.get())
+         if (i == 2) :
+             prev_task.set('')
+         else :
+             prev_task.set(current_cl.col_values(2)[i-1])
+         current_task.set(current_cl.col_values(2)[i])
+         comment.set(current_cl.col_values(3)[i])
+         next_task.set(current_cl.col_values(2)[i+1])
+     else :
+         Check_list.destroy()
 
 # ________________________________________________________________________________
 """
@@ -76,10 +93,7 @@ def print_check_list(current_check_list) :
     title = current_cl.col_values(0)[0]
     
     # Number of tasks in the checklist
-    ##########
-        
-    i = 2
-    
+    n=5
     
     #Opening of the first interface
     Check_list = Tk()
@@ -99,51 +113,52 @@ def print_check_list(current_check_list) :
     #We set all the names and the position of all the Labelframe (small frame)
     
     #Prevous task
-    prev_task = LabelFrame(Check_list, height=60, text="Tâche précédente")
-    prev_task.grid_propagate(0)
-    prev_task.pack(fill="both", expand="no", padx=100)
+    prev_task_frame = LabelFrame(Check_list, height=60, text="Tâche précédente")
+    prev_task_frame.grid_propagate(0)
+    prev_task_frame.pack(fill="both", expand="no", padx=100)
     
     #Current task
-    current_task = LabelFrame(Check_list, height=120, text="Tâche en cours")
-    current_task.grid_propagate(0)
-    current_task.pack(fill="both", expand="no", padx=100)
+    current_task_frame = LabelFrame(Check_list, height=120, text="Tâche en cours")
+    current_task_frame.grid_propagate(0)
+    current_task_frame.pack(fill="both", expand="no", padx=100)
     
     #Next task
-    next_task = LabelFrame(Check_list, height=60, text="Tâche suivante")
-    next_task.grid_propagate(0)
-    next_task.pack(fill="both", expand="no", padx=100)
+    next_task_frame = LabelFrame(Check_list, height=60, text="Tâche suivante")
+    next_task_frame.grid_propagate(0)
+    next_task_frame.pack(fill="both", expand="no", padx=100)
     
 
 
-    
-    
-    
-    
-    while i<5 :
 
-        #===============================================================================
+#===============================================================================
 
-         # for i in range (1, 9) :
+    compteur = IntVar(value=1)
+    i = int(compteur.get())
+    
+    prev_task = StringVar(value = '')
+    current_task = StringVar(value = '')#current_cl.col_values(2)[i])
+    comment = StringVar(value = '')#current_cl.col_values(3)[i])
+    next_task = StringVar(value = '')#current_cl.col_values(2)[i+1])
+    
+    
+    # Previous task
+    prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2).place(x=30, y=5)
+
+    
+    #Current Task
+    current_task_label = Label(current_task_frame, textvariable = current_task, font=font2).place(x=30, y=5)
+    to_do_label = Label(current_task_frame, text="To do", font=font2).place(x=30, y=40)
+    comment_label = Label(current_task_frame, textvariable = comment, font=font2).place(x=100, y=60)
+    
+    #Next task
+    next_task_label = Label(next_task_frame, textvariable = next_task, font=font2).place(x=30, y=5)
+      
+    
+    # When validation button hit, erase all, i = i +1
+    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :my_func(compteur,n, prev_task, current_task, comment, next_task, current_cl)).place(x=350, y=363)
+    
         
-        # Previous task
-        label1 = Label(prev_task, text=current_cl.col_values(2)[i-1], font=font2).place(x=30, y=5)
-        label1.pack()
         
-        #Current Task
-        label2 = Label(current_task, text=current_cl.col_values(2)[i], font=font2).place(x=30, y=5)
-        label3 = Label(current_task, text="To do", font=font2).place(x=30, y=40)
-        label4 = Label(current_task, text=current_cl.col_values(3)[i], font=font2).place(x=100, y=60)
-        
-        #Next task
-        label5 = Label(next_task, text=current_cl.col_values(2)[i+1], font=font2).place(x=30, y=5)
-  
-    
-        # When validation button hit, erase all, i = i +1
-        Validate = Button(Check_list, text = '  OK  ', fg='green', command=Check_list.quit).place(x=350, y=363)
-
-        i+=1
-        
-    
     Check_list.mainloop()
  # ________________________________________________________________________________   
     
