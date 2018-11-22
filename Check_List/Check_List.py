@@ -105,6 +105,7 @@ def print_check_list(current_check_list) :
     #Font allows to choose the police, the size and the type of our text. We set two types that we will use
     font1 = tkFont.Font(family='Helvetica', size=36, weight='bold')
     font2 = tkFont.Font(family='Helvetica', size=14)
+    font3 = tkFont.Font(family='Helvetica', size = 18)
     
     #We set the title of this interface
     Title1 = Label(Check_list, text=title, pady=3, height=2, font=font1, fg='red')
@@ -118,7 +119,7 @@ def print_check_list(current_check_list) :
     #Current task
     current_task_frame = LabelFrame(Check_list, height=120, text="Tâche en cours")
     current_task_frame.grid_propagate(0)
-    current_task_frame.pack(fill="both", expand="no", padx=100)
+    current_task_frame.pack(fill="both", expand="no",  padx=100)
     
     #Next task
     next_task_frame = LabelFrame(Check_list, height=60, text="Tâche suivante")
@@ -139,11 +140,11 @@ def print_check_list(current_check_list) :
     next_task = StringVar(value = current_cl.col_values(2)[i+1])
     
     # All the labels that will be displayed on the interface
-    prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2).place(x=30, y=5)
-    current_task_label = Label(current_task_frame, textvariable = current_task, font=font2).place(x=30, y=5)
-    to_do_label = Label(current_task_frame, text="To do", font=font2).place(x=30, y=40)
-    action_label = Label(current_task_frame, textvariable = action, font=font2).place(x=100, y=60)
-    next_task_label = Label(next_task_frame, textvariable = next_task, font=font2).place(x=30, y=5)
+    prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2, fg='grey').place(x=30, y=5)
+    current_task_label = Label(current_task_frame, textvariable = current_task, font=font3, fg='blue').place(x=30, y=5)
+    to_do_label = Label(current_task_frame, text="A faire", font=font2).place(x=30, y=40)
+    action_label = Label(current_task_frame, textvariable = action, font=font2, fg='blue').place(x=100, y=60)
+    next_task_label = Label(next_task_frame, textvariable = next_task, font=font2, fg='grey').place(x=30, y=5)
       
     #===============================================================================
     # Validation button :
@@ -154,10 +155,8 @@ def print_check_list(current_check_list) :
         
     # Runs the tkinter interface
     Check_list.mainloop()
-  
-    
-  
-print_check_list('Visite_Prevol_Cabine') # Test to see if functions work
-
 
  # ________________________________________________________________________________ 
+ 
+ 
+print_check_list('Visite_Prevol_Cabine') # Test to see if functions work
