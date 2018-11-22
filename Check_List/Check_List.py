@@ -23,35 +23,15 @@ import tkinter.font as tkFont
 
 # ________________________________________________________________________________
 #
-# Defines the data not accessible yet
-# ________________________________________________________________________________
-
-# Aicraft data - not contained in the databases
-# To be retrieved from the aircraft
-take_off_speed = 2
-cruise_speed = 2 # in XX per hour
-landing_speed = 2
-course = 2 # in XX 
-altitude = 2 # in XX
-gaz = 2 # in XX - gaz remaining in the airplane
-
-
-
-# ________________________________________________________________________________
-#
 # Gets the databases from excel files
 # ________________________________________________________________________________
 
 
 # Import the excel files containing the databases
-check_lists = xlrd.open_workbook('../Databases/Check_lists_DR400.xlsx') # Flight Check lists
+Check_Lists = xlrd.open_workbook('../Databases/Check_Lists_DR400.xlsx') # Flight Check lists
 
-airfields_database = xlrd.open_workbook('../Databases/airfields_database.xlsx') # Airfields databases
-
- 
 # Get the names of the tabs
-names_cl = check_lists.sheet_names()
-
+names_cl = Check_Lists.sheet_names()
 
 # ________________________________________________________________________________
 #
