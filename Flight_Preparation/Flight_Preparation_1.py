@@ -10,15 +10,21 @@ from tkinter import *
 from functools import partial
 import tkinter.font as tkFont
 from tkinter.ttk import Combobox
+import Flight_Preparation_2
+import Classe
+from Essai import La
+import intermediaire
 
 def callback():
     a = aircraft.get()
-    b = departure.get()
-    c = arrival.get()
-    d = hour.get()
-    e = min.get()
-    f = ampm.get()
-    if (a=='' or b=='' or c=='' or d=='' or e=='' or f==''):
+    b = int(passengers.get())
+    c = departure.get()
+    d = arrival.get()
+    h0 = int(hour.get())
+    m0 = int(min.get())
+    am0 = ampm.get()
+    #print(a,b,c,d,h0,m0,am0)
+    if (a=='' or b=='' or c=='' or d=='' or h0=='' or m0=='' or am0==''):
         Error = Tk()
         Error.title('Erreur')
         Error.geometry("750x50")
@@ -34,8 +40,15 @@ def callback():
         Error_Message1.pack()
         Error_Message2 = Label(Error, text="Veuillez choisir un autre avion", font=font_error, fg='red')
         Error_Message2.pack()
-    
-    
+    else:
+        Mission_Parameters.destroy()
+        [h0,m0,am0,h,m,am] = Flight_Preparation_2.Time(h0,m0,am0)
+        f = Flight_Preparation_2.Fuel(h0,m0,am0)
+        Data = Classe.Donnees(a,b,c,d,h0,m0,am0,h,m,am,f)
+        intermediaire.launch(Data)
+        
+
+
 #Opening of the first interface
 Mission_Parameters = Tk()
 Mission_Parameters.title('Copilote virtuel')
@@ -79,7 +92,9 @@ Combo_Aircraft = Combobox(frame_aircraft, values=Aircraft_List, textvariable=air
 
 Crew = Label(frame_aircraft, text="Nombre de personnes à bord", font=font_aircraft).place(x=10, y=40)
 #Spinbox that allows us to specify the number of passengers for the flight
-s = Spinbox(frame_aircraft, from_=1, to=10, font=font_aircraft).place(x=210, y=37)
+passengers = StringVar()
+s = Spinbox(frame_aircraft, from_=1, to=10, textvariable=passengers, font=font_aircraft).place(x=210, y=37)
+
 #===============================================================================
 
 #Inside the Airport Parameters
@@ -105,8 +120,8 @@ hour = StringVar()
 Combo_Hour = Spinbox(frame_flight, from_=0, to=12, textvariable=hour, width=3).place(x=190, y=3)
 min = StringVar()
 Combo_Minute = Spinbox(frame_flight, from_=0, to=59, textvariable=min, width=3).place(x=260, y=3)
-if (int(min.get())>59):
-    min.set(0)
+# if (int(min.get())>59):
+#     min.set(0)
 #We create the list-down box in order to specify am or pm time
 Time_List = ["am","pm"]
 ampm = StringVar()
@@ -116,7 +131,5 @@ Time = Combobox(frame_flight, values=Time_List, textvariable=ampm, width=3).plac
 
 
 Validate = Button(Mission_Parameters, text = 'Valider', fg='green', command=callback).place(x=350, y=363)
-
-
 
 Mission_Parameters.mainloop()

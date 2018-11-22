@@ -1,25 +1,47 @@
-
-import ..\Useful_Fonctions
+#Importation
+import sys
+sys.path.insert(0,'../Useful_Functions')
+import Distance
 import math
-#Calculation of the time between two airports and the fuel needed
+from tkinter import *
+from functools import partial
+import tkinter.font as tkFont
+from tkinter.ttk import Combobox
 
-def Time():
+#Two functions that we need :
+#Time that computes the time needed in order to go from airport a to airport b
+def Time(h0,m0,am0):
     v = 225.
-    d = 550
     #v = cruise_speed #vitesse de croisière en km/h
-    #d = distance(pos_dep,pos_arr) #distance entre les aéroports en km
+    d = Distance.distance([1,1],[1,1]) #distance entre les aéroports en km
+    print(d)
     t = (d/v)*3600
-    s = t%60
+    ds = t%60
     t = t//60
-    m = t%60
-    h = t//60
-    return [h,m,s]
+    dm = t%60
+    dh = t//60
+    h = h0 + dh
+    m = m0 + dm
+    if (m>60):
+        h = h + 1
+        m = m - 60
+    if (h>11):
+        h = h-12
+        if (am0 == 'am'):
+            am = 'pm'
+        else:
+            am = 'am'
+    else:
+        am = am0
+    return [h0,m0,am0,h,m,am]
 
-def Fuel():
+#Fuel that computes the fuel needed in order to go from airport a to airport b
+def Fuel(h0,m0,am0):
     f_h = 35.
-    [h,m,s] = Time()
-    f = f_h*h + m*(f_h/60) + s*(f_h/3600)
+    [h0,m0,am0,h,m,am] = Time(h0,m0,am0)
+    f = f_h*h + (m+1)*(f_h/60)
     f = math.floor(f)+1
     return (f)
+
     
-Fuel()
+    
