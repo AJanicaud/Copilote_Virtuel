@@ -14,7 +14,6 @@ Created on Mon Oct 29 19:04:28 2018
 #
 # ________________________________________________________________________________
 
-
 # Importation
 import xlrd
 from tkinter import *
@@ -86,7 +85,7 @@ def print_check_list(current_check_list) :
         return "Error" 
     
     # We go in the correct tab
-    current_cl = check_lists.sheet_by_name(current_check_list)    
+    current_cl = Check_Lists.sheet_by_name(current_check_list)    
     
     # Name of the checklist
     title = current_cl.col_values(0)[0]
@@ -159,4 +158,6 @@ def print_check_list(current_check_list) :
  # ________________________________________________________________________________ 
  
  
+ 
+# TO BE DELETED
 print_check_list('Visite_Prevol_Cabine') # Test to see if functions work
