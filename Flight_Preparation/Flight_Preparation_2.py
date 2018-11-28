@@ -15,9 +15,15 @@ import Classe
 import math
 
 
+def callback1():
+    Mission_Parameters_2.destroy()
+
+def callback2():
+    Mission_Parameters_2.destroy()
+
 #Function that implements the second interface
 #Entering parameter : Data (class that contains all the general information concerning the flight)
-def launch(Data):
+def launch(Flight_Parameters_Data):
     #Opening of the second interface
     Mission_Parameters_2 = Tk()
     Mission_Parameters_2.title('Plan de vol')
@@ -46,23 +52,27 @@ def launch(Data):
     #We set the label concerning the arrival time
     Arrival_Time = Label(frame_arrival, text="Heure prévue d'arrivée", font=font_aircraft).place(x=30, y=5)
     #We define a string containing the predicted time of arrival (ex: 1h10pm)
-    string_1 = str(math.floor(Classe.Donnees.get_arrival_hour(Data)))+ ' ' + 'H' +' '+ str(math.floor(Classe.Donnees.get_arrival_minute(Data))) + ' ' + Classe.Donnees.get_arrival_ampm(Data)
+    string_1 = str(math.floor(Classe.Flight_Parameters_Class.get_arrival_hour(Flight_Parameters_Data)))+ ' ' + 'H' +' '+ str(math.floor(Classe.Flight_Parameters_Class.get_arrival_minute(Flight_Parameters_Data))) + ' ' + Classe.Flight_Parameters_Class.get_arrival_ampm(Flight_Parameters_Data)
     #We set the label containing the previous string defined
     Hour_Arrival_Time = Label(frame_arrival, text=string_1, font=font_aircraft, fg='blue').place(x=55, y=30)
     
     #We set the label concerning the distance to achieve
     Distance_1 = Label(frame_arrival, text="Distance à parcourir", font=font_aircraft).place(x=200, y=5)
     #We define a string containing the distance to achieve (ex: 100km)
-    string_2 = str(math.floor(Classe.Donnees.get_distance(Data))) + ' ' + 'km'
+    string_2 = str(math.floor(Classe.Flight_Parameters_Class.get_distance(Flight_Parameters_Data))) + ' ' + 'km'
     #We set the label containing the previous string defined
     Prediction_Distance = Label(frame_arrival, text=string_2, font=font_aircraft, fg='blue').place(x=238, y=30)
 
     #We set the label concerning the fuel needed
     Fuel_Needed = Label(frame_arrival, text="Fuel nécessaire", font=font_aircraft).place(x=350, y=5)
     #We define a string containing the fuel needed (ex: 10L)
-    string_3 = str(math.floor(Classe.Donnees.get_fuel_needed(Data))) + ' ' + 'L'
+    string_3 = str(math.floor(Classe.Flight_Parameters_Class.get_fuel_needed(Flight_Parameters_Data))) + ' ' + 'L'
     #We set the label containing the previous string defined
     Prediction_Fuel_Needed = Label(frame_arrival, text=string_3, font=font_aircraft, fg='blue').place(x=385, y=30)
     #==============================================================================
+    
+    Departure_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport de départ', fg='green', command=callback1).place(x=150, y=373)
+    Trajectory_Map = Button(Mission_Parameters_2, text = 'Trajectoire', fg='green', command=callback1).place(x=350, y=373)
+    Arrival_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport d''arrivée', fg='green', command=callback2).place(x=500, y=373)
     
     Mission_Parameters_2.mainloop()
