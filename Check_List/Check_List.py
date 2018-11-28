@@ -16,9 +16,11 @@ Created on Mon Oct 29 19:04:28 2018
 
 # Importation
 import xlrd
+import xlwt
 from tkinter import *
 from functools import partial
 import tkinter.font as tkFont
+
 
 # ________________________________________________________________________________
 #
@@ -51,22 +53,59 @@ Function : next_window
         increments the counter of one
         displays the next task in the check list
 """
-def next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl):
+def next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl, comment, new_comment, new_comment_box):
     counter.set(counter.get()+1) # Increments the counter of one
     i = int(counter.get()) # Transforms the counter from an IntVar to and int 
+    
+   # if (current_cl.col_values(4)[i] == ''):
+   #     See_Comment.state = 'normal'
+   #     See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:comment(Check_list)).place(x=550, y=200)
+   # else : 
+    #    See_Comment.state = 'disabled'
+    comment.set('') # Reseting of the comment section for each new task
+
+    if (new_comment.get() != ''):
+        print(new_comment.get())
+    #    cell = current_cl.col_values(4)[i]
+    #    cell.write(new_comment.get())
+        current_cl.write(i,4, new_comment.get())
+    new_comment.set('')
+    print(new_comment.get())
+    new_comment_box.place(x=1000, y=1000)
+    
+    
     # Modify tasks displayed
     if (counter.get()<n-1):
          prev_task.set(current_cl.col_values(2)[i-1])
          current_task.set(current_cl.col_values(2)[i])
          action.set(current_cl.col_values(3)[i])
          next_task.set(current_cl.col_values(2)[i+1])
-    elif (counter.get() == n-1):
+    elif (counter.get() == n-1): # Last task
          prev_task.set(current_cl.col_values(2)[i-1])
          current_task.set(current_cl.col_values(2)[i])
          action.set(current_cl.col_values(3)[i])
          next_task.set('') # When the last task has been reached, there is nothing else to do
     else :
          Check_list.destroy()  # Stop when last task has been displayed
+
+
+
+def see_comment(counter, Check_list, comment, current_cl):
+    i = int(counter.get())
+    comment.set(current_cl.col_values(4)[i])
+    #rentre inactif le bouton !!!!!!!!!!
+
+    
+def add_comment(counter, Check_list, comment, current_cl,current_task_frame, new_comment, new_comment_box):
+    #new_comment_box = Entry(current_task_frame, textvariable=new_comment, width=20)
+    new_comment_box.place(x=320, y=70)
+    #Validate_Comment = Button(current_task_frame, text = ' OK ', fg='green', command=lambda :validate_comment()).place(x=510, y=73)
+
+    #ligne_texte.pack()
+    
+#def validate_comment():
+    
+#    Validate.destroy()
 
 
 """
@@ -78,7 +117,7 @@ Function : print_check_list
 @return : void
         prints on the interface
 """
-def print_check_list(current_check_list) :
+def Print_Check_List(current_check_list) :
     
     # The check list considered must be defined in the database
     if (current_check_list not in names_cl): 
@@ -137,6 +176,8 @@ def print_check_list(current_check_list) :
     current_task = StringVar(value = current_cl.col_values(2)[i])
     action = StringVar(value = current_cl.col_values(3)[i])
     next_task = StringVar(value = current_cl.col_values(2)[i+1])
+    comment = StringVar(value = '')
+    new_comment = StringVar()
     
     # All the labels that will be displayed on the interface
     prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2, fg='grey').place(x=30, y=5)
@@ -144,14 +185,26 @@ def print_check_list(current_check_list) :
     to_do_label = Label(current_task_frame, text="A faire", font=font2).place(x=30, y=40)
     action_label = Label(current_task_frame, textvariable = action, font=font2, fg='blue').place(x=100, y=60)
     next_task_label = Label(next_task_frame, textvariable = next_task, font=font2, fg='grey').place(x=30, y=5)
-      
+    comment_label = Label(current_task_frame, textvariable = comment, font=font2, fg='orange').place(x=320, y=50)
+    
+    
+    new_comment_box = Entry(current_task_frame, textvariable=new_comment, width=20)
+    
+    See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, Check_list, comment, current_cl), state = 'normal').place(x=545, y=162)
+     
+    
+    
     #===============================================================================
     # Validation button :
         # is hit when current task is completed
         # calls the next_window function
-    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl)).place(x=350, y=363)
-    
+    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl, comment, new_comment, new_comment_box)).place(x=350, y=363)
+
+   # See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:comment(Check_list)).place(x=550, y=200)
         
+    Add_Comment = Button(Check_list, text = 'Add comments', fg='orange', command=lambda:add_comment(counter, Check_list, comment, current_cl,current_task_frame, new_comment, new_comment_box)).place(x=544, y=182)
+
+    
     # Runs the tkinter interface
     Check_list.mainloop()
 
@@ -160,4 +213,4 @@ def print_check_list(current_check_list) :
  
  
 # TO BE DELETED
-print_check_list('Visite_Prevol_Cabine') # Test to see if functions work
+Print_Check_List('Visite_Prevol_Cabine') # Test to see if functions work
