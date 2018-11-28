@@ -5,17 +5,18 @@
 # 
 # First interface: the purpose is to set all the parameters of the mission (type of the aircraft, number of passsengers, airport of departure, airport of arrival, departure time)
 
-#Importation
+#Importation for the interface
 from tkinter import *
 from functools import partial
 import tkinter.font as tkFont
 from tkinter.ttk import Combobox
-import Flight_Preparation_2
+#functions
 import Classe
-from Essai import La
-import intermediaire
+import Flight_Preparation_2
 
+#function called by the user when he pressed the button "Valider"
 def callback():
+    #We first collect all the data that the user filled in
     a = aircraft.get()
     b = int(passengers.get())
     c = departure.get()
@@ -23,15 +24,18 @@ def callback():
     h0 = int(hour.get())
     m0 = int(min.get())
     am0 = ampm.get()
-    #print(a,b,c,d,h0,m0,am0)
+    #In the case that the user misfilled one of the data, we display an error message
     if (a=='' or b=='' or c=='' or d=='' or h0=='' or m0=='' or am0==''):
+        #Setting the error message
         Error = Tk()
         Error.title('Erreur')
         Error.geometry("750x50")
         font_error = tkFont.Font(family='Helvetica', size=24, weight='bold')
         Error_Message = Label(Error, text="Vous n'avez pas rempli toutes les informations nécessaires", font=font_error, fg='red')
         Error_Message.pack()
-    if (a=='Rafale' or b=='A380'):
+    #In the case that the user filled the aircraft with a model that we did not implement, we display an error message
+    elif (a=='Rafale' or b=='A380'):
+        #Setting the error message
         Error = Tk()
         Error.title('Erreur')
         Error.geometry("750x50")
@@ -40,15 +44,22 @@ def callback():
         Error_Message1.pack()
         Error_Message2 = Label(Error, text="Veuillez choisir un autre avion", font=font_error, fg='red')
         Error_Message2.pack()
+    #If all the informations are correct, we can continue our program
     else:
+        #We destroy the first interface
         Mission_Parameters.destroy()
-        [h0,m0,am0,h,m,am] = Flight_Preparation_2.Time(h0,m0,am0)
-        f = Flight_Preparation_2.Fuel(h0,m0,am0)
-        Data = Classe.Donnees(a,b,c,d,h0,m0,am0,h,m,am,f)
-        intermediaire.launch(Data)
+        #We compute the time of flight
+        #Données fichier excel à récupérer pour les positions de départ et d'arrivée aéroports
+        [h0,m0,am0,h,m,am,dis] = Classe.Time(h0,m0,am0,)
+        #We compute the fuel that we will need during the flight
+        f = Classe.Fuel(h0,m0,am0)
+        #We create a class Donnees that collects all the general information concerning the flight
+        Data = Classe.Donnees(a,b,c,d,h0,m0,am0,h,m,am,f,dis)
+        #We can launch the second interface
+        Flight_Preparation_2.launch(Data)
         
 
-
+#===============================================================================
 #Opening of the first interface
 Mission_Parameters = Tk()
 Mission_Parameters.title('Copilote virtuel')
