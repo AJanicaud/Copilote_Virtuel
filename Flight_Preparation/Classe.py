@@ -100,3 +100,10 @@ class Donnees:
         
     def get_fuel_needed(self):
         return self.fuel_needed
+class Airfields:
+    def __init__(self, name_airfield):
+        Airfields.name=name_airfield
+    def get_name(self):
+        return self.name
+    
+    
