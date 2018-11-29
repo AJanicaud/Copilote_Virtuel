@@ -10,6 +10,7 @@ from tkinter import *
 from functools import partial
 import tkinter.font as tkFont
 from tkinter.ttk import Combobox
+
 #functions
 import Classe
 import Flight_Preparation_2
@@ -65,7 +66,7 @@ def callback():
 #Opening of the first interface
 Mission_Parameters = Tk()
 Mission_Parameters.title('Copilote virtuel')
-Mission_Parameters.geometry("750x400")
+Mission_Parameters.geometry("750x600")
 
 #Font allows to choose the police, the size and the type of our text. We set two types that we will use
 font1 = tkFont.Font(family='Helvetica', size=36, weight='bold')
