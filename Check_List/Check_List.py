@@ -68,9 +68,8 @@ def next_window(counter,n, Check_list, prev_task, current_task, action, next_tas
         print(new_comment.get())
     #    cell = current_cl.col_values(4)[i]
     #    cell.write(new_comment.get())
-        current_cl.write(i,4, new_comment.get())
+    #    current_cl.write(i,4, new_comment.get())
     new_comment.set('')
-    print(new_comment.get())
     new_comment_box.place(x=1000, y=1000)
     
     
