@@ -10,6 +10,7 @@ from tkinter import *
 from functools import partial
 import tkinter.font as tkFont
 from tkinter.ttk import Combobox
+
 #functions
 import Classe
 import Flight_Preparation_2
@@ -50,20 +51,22 @@ def callback():
         Mission_Parameters.destroy()
         #We compute the time of flight
         #Données fichier excel à récupérer pour les positions de départ et d'arrivée aéroports
-        [h0,m0,am0,h,m,am,dis] = Classe.Time(h0,m0,am0,)
+        Aircraft_Parameters_Data = Classe.Aircraft_Parameters_Class(a)
+        [h0,m0,am0,h,m,am,dis] = Classe.Time(h0,m0,am0,Aircraft_Parameters_Data)
         #We compute the fuel that we will need during the flight
-        f = Classe.Fuel(h0,m0,am0)
+        f = Classe.Fuel(h0,m0,am0,Aircraft_Parameters_Data)
         #We create a class Donnees that collects all the general information concerning the flight
-        Data = Classe.Donnees(a,b,c,d,h0,m0,am0,h,m,am,f,dis)
+
+        Flight_Parameters_Data = Classe.Flight_Parameters_Class(b,c,d,h0,m0,am0,h,m,am,f,dis)
         #We can launch the second interface
-        Flight_Preparation_2.launch(Data)
+        Flight_Preparation_2.launch(Flight_Parameters_Data)
         
 
 #===============================================================================
 #Opening of the first interface
 Mission_Parameters = Tk()
 Mission_Parameters.title('Copilote virtuel')
-Mission_Parameters.geometry("750x400")
+Mission_Parameters.geometry("750x600")
 
 #Font allows to choose the police, the size and the type of our text. We set two types that we will use
 font1 = tkFont.Font(family='Helvetica', size=36, weight='bold')
@@ -113,7 +116,7 @@ s = Spinbox(frame_aircraft, from_=1, to=10, textvariable=passengers, font=font_a
 Airport_departure = Label(frame_airport, text="Aéroport de départ", font=font_aircraft).place(x=30, y=5)
 Airport_arrival = Label(frame_airport, text="Aéroport d'arrivée", font=font_aircraft).place(x=30, y=40)
 #We create the list of all the airports we can use
-Airport_List = ["Lasbordes", "Blagnac", "CDG", "Orly"]
+Airport_List = ["Lasbordes", "Gaillac", "Montauban"]
 #We create two list-down boxes (une for the departure and one for the arrival) linked to the airports
 departure = StringVar()
 Combo_Departure = Combobox(frame_airport, values=Airport_List, textvariable=departure).place(x=190, y=5)
