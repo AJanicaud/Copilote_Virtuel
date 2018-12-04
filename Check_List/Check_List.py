@@ -24,7 +24,7 @@ import tkinter.font as tkFont
 
 # ________________________________________________________________________________
 #
-# Gets the databases from excel files
+# Gets the databases from excel files - TO BE DELETED - WILL BE EXECUTED IN THE MAIN
 # ________________________________________________________________________________
 
 
@@ -34,11 +34,11 @@ Check_Lists = xlrd.open_workbook('../Databases/Check_Lists_DR400.xlsx') # Flight
 # Get the names of the tabs
 names_cl = Check_Lists.sheet_names()
 
+
 # ________________________________________________________________________________
 #
-# Displays the tasks on the interface for the pilote to see
+# Functions associated with the buttons
 # ________________________________________________________________________________
-
 
 """
 Function : next_window
@@ -47,65 +47,93 @@ Function : next_window
 @param : IntVar counter
          int n
          tkinter.Tk Check_list
-         Labels prev_task, current_task, action and next_task
          xlrd.sheet.Sheet current_cl
+         Labels prev_task, current_task, action, next_task, comment, new_comment
+         Entry new_comment_box
 @return : void
         increments the counter of one
+        enable or disable the See_Comment button
+        saves the new comment
         displays the next task in the check list
 """
-def next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl, comment, new_comment, new_comment_box):
+def next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, new_comment, new_comment_box, current_task_frame,priority_label,font3,over):
     counter.set(counter.get()+1) # Increments the counter of one
     i = int(counter.get()) # Transforms the counter from an IntVar to and int 
-    
-   # if (current_cl.col_values(4)[i] == ''):
-   #     See_Comment.state = 'normal'
-   #     See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:comment(Check_list)).place(x=550, y=200)
-   # else : 
-    #    See_Comment.state = 'disabled'
+    """
+    # Updates the See_Comment button
     comment.set('') # Reseting of the comment section for each new task
-
+    if (current_cl.col_values(4)[i] == '') : # The button is disabled if there is no comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = DISABLED).place(x=545, y=162)
+    else : # The button is enabled if there is a comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = NORMAL).place(x=545, y=162)
+    
+    # Saves the new comment
     if (new_comment.get() != ''):
         print(new_comment.get())
     #    cell = current_cl.col_values(4)[i]
     #    cell.write(new_comment.get())
     #    current_cl.write(i,4, new_comment.get())
     new_comment.set('')
-    new_comment_box.place(x=1000, y=1000)
-    
-    
+    new_comment_box.place(x=1000, y=1000)   
+"""
     # Modify tasks displayed
     if (counter.get()<n-1):
          prev_task.set(current_cl.col_values(2)[i-1])
          current_task.set(current_cl.col_values(2)[i])
+         priority.set(current_cl.col_values(1)[i])
          action.set(current_cl.col_values(3)[i])
          next_task.set(current_cl.col_values(2)[i+1])
     elif (counter.get() == n-1): # Last task
          prev_task.set(current_cl.col_values(2)[i-1])
          current_task.set(current_cl.col_values(2)[i])
+         priority.set(current_cl.col_values(1)[i])
          action.set(current_cl.col_values(3)[i])
          next_task.set('') # When the last task has been reached, there is nothing else to do
+         over = True
+         return over
     else :
          Check_list.destroy()  # Stop when last task has been displayed
+        # over = True
+        # return over
+"""
+    # The priority color depends on the level of importance of the task
+    if (priority.get() == 1) :
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='red').place(x=0, y=5)
+    elif (priority.get() == 2):
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='orange').place(x=0, y=5)
+    else :
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='yellow').place(x=0, y=5)
+"""
 
-
-
-def see_comment(counter, Check_list, comment, current_cl):
+"""
+Function : see_comment
+           Displays the comments associated with the current task
+@param : IntVar counter
+         Labels comment
+         xlrd.sheet.Sheet current_cl
+@return : void
+        shows the comment associated with the current task
+"""
+def see_comment(counter, comment, current_cl):
     i = int(counter.get())
     comment.set(current_cl.col_values(4)[i])
-    #rentre inactif le bouton !!!!!!!!!!
-
     
-def add_comment(counter, Check_list, comment, current_cl,current_task_frame, new_comment, new_comment_box):
-    #new_comment_box = Entry(current_task_frame, textvariable=new_comment, width=20)
+
+"""
+Function : add_comment
+           Allows the pilote to add a new comment for the current task
+@param : Entry new_comment_box
+@return : void
+        Displays the new comment box to allow the pilote to write a new comment
+"""
+def add_comment(new_comment_box):
     new_comment_box.place(x=320, y=70)
-    #Validate_Comment = Button(current_task_frame, text = ' OK ', fg='green', command=lambda :validate_comment()).place(x=510, y=73)
 
-    #ligne_texte.pack()
     
-#def validate_comment():
-    
-#    Validate.destroy()
-
+# ________________________________________________________________________________
+#
+# Displays the tasks on the interface for the pilote to see
+# ________________________________________________________________________________
 
 """
 Function : print_check_list
@@ -116,7 +144,9 @@ Function : print_check_list
 @return : void
         prints on the interface
 """
-def Print_Check_List(current_check_list) :
+def Print_Check_List(current_check_list, over) :
+    
+    over = False
     
     # The check list considered must be defined in the database
     if (current_check_list not in names_cl): 
@@ -173,10 +203,13 @@ def Print_Check_List(current_check_list) :
     # The content of the first window to be displayed
     prev_task = StringVar(value = '') 
     current_task = StringVar(value = current_cl.col_values(2)[i])
+    priority = IntVar(value = current_cl.col_values(1)[i])
     action = StringVar(value = current_cl.col_values(3)[i])
     next_task = StringVar(value = current_cl.col_values(2)[i+1])
     comment = StringVar(value = '')
     new_comment = StringVar()
+    
+    
     
     # All the labels that will be displayed on the interface
     prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2, fg='grey').place(x=30, y=5)
@@ -186,30 +219,47 @@ def Print_Check_List(current_check_list) :
     next_task_label = Label(next_task_frame, textvariable = next_task, font=font2, fg='grey').place(x=30, y=5)
     comment_label = Label(current_task_frame, textvariable = comment, font=font2, fg='orange').place(x=320, y=50)
     
+    # The priority color depends on the level of importance of the task
+    if (priority.get() == 1) :
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='red').place(x=0, y=5)
+    elif (priority.get() == 2):
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='orange').place(x=0, y=5)
+    else :
+        priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='yellow').place(x=0, y=5)
     
+    # Creation of the box that will hold the new comments
     new_comment_box = Entry(current_task_frame, textvariable=new_comment, width=20)
-    
-    See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, Check_list, comment, current_cl), state = 'normal').place(x=545, y=162)
-     
     
     
     #===============================================================================
+    # Buttons
+    
     # Validation button :
         # is hit when current task is completed
         # calls the next_window function
-    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, prev_task, current_task, action, next_task, current_cl, comment, new_comment, new_comment_box)).place(x=350, y=363)
+    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, new_comment, new_comment_box,current_task_frame,priority_label,font3,over)).place(x=350, y=363)
+   
+    # See_Comment button :
+        # is hit when the pilote wants to see the comments for the current task
+    if (current_cl.col_values(4)[i] == '') : # The button is disabled if there is no comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = DISABLED).place(x=545, y=162)
+    else : # The button is enabled if there is a comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = NORMAL).place(x=545, y=162)
+      
+    # Add_Comment button :
+        # is hit when the pilote wants to add a comment for the current task
+    Add_Comment = Button(Check_list, text = 'Add comments', fg='orange', command=lambda:add_comment(new_comment_box)).place(x=544, y=182)
 
-   # See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:comment(Check_list)).place(x=550, y=200)
-        
-    Add_Comment = Button(Check_list, text = 'Add comments', fg='orange', command=lambda:add_comment(counter, Check_list, comment, current_cl,current_task_frame, new_comment, new_comment_box)).place(x=544, y=182)
 
-    
+    #===============================================================================
     # Runs the tkinter interface
     Check_list.mainloop()
+#    Check_list.destroy()
 
- # ________________________________________________________________________________ 
+
+# ________________________________________________________________________________ 
  
  
  
 # TO BE DELETED
-Print_Check_List('Visite_Prevol_Cabine') # Test to see if functions work
+Print_Check_List(names_cl[0], False) # Test to see if functions work
