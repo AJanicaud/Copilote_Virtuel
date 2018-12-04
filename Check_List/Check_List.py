@@ -95,7 +95,8 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
          Check_list.destroy()  # Stop when last task has been displayed
         # over = True
         # return over
-"""
+        
+
     # The priority color depends on the level of importance of the task
     if (priority.get() == 1) :
         priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='red').place(x=0, y=5)
@@ -103,7 +104,7 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
         priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='orange').place(x=0, y=5)
     else :
         priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='yellow').place(x=0, y=5)
-"""
+
 
 """
 Function : see_comment
@@ -208,8 +209,6 @@ def Print_Check_List(current_check_list, over) :
     next_task = StringVar(value = current_cl.col_values(2)[i+1])
     comment = StringVar(value = '')
     new_comment = StringVar()
-    
-    
     
     # All the labels that will be displayed on the interface
     prev_task_label = Label(prev_task_frame, textvariable = prev_task, font=font2, fg='grey').place(x=30, y=5)
