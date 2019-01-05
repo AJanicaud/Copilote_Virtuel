@@ -56,13 +56,13 @@ Function : next_window
         saves the new comment
         displays the next task in the check list
 """
-def next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, new_comment, new_comment_box, current_task_frame,priority_label,font3,over):
+def next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, col_com, new_comment, new_comment_box, current_task_frame,priority_label,font3,over):
     counter.set(counter.get()+1) # Increments the counter of one
     i = int(counter.get()) # Transforms the counter from an IntVar to and int 
     """
     # Updates the See_Comment button
     comment.set('') # Reseting of the comment section for each new task
-    if (current_cl.col_values(4)[i] == '') : # The button is disabled if there is no comment to see for the current task
+    if (current_cl.col_values(col_com)[i] == '') : # The button is disabled if there is no comment to see for the current task
         See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = DISABLED).place(x=545, y=162)
     else : # The button is enabled if there is a comment to see for the current task
         See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = NORMAL).place(x=545, y=162)
@@ -70,9 +70,9 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
     # Saves the new comment
     if (new_comment.get() != ''):
         print(new_comment.get())
-    #    cell = current_cl.col_values(4)[i]
+    #    cell = current_cl.col_values(col_com)[i]
     #    cell.write(new_comment.get())
-    #    current_cl.write(i,4, new_comment.get())
+    #    current_cl.write(i,col_com, new_comment.get())
     new_comment.set('')
     new_comment_box.place(x=1000, y=1000)   
 """
@@ -96,6 +96,13 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
         # over = True
         # return over
         
+    # The state of the See_Comment button is updated
+    if (current_cl.col_values(col_com)[i] == '') : # The button is disabled if there is no comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=545, y=162)
+        comment.set(current_cl.col_values(col_com)[i]) # The comment section is erased if there is no comment associated
+    else : # The button is enabled if there is a comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=545, y=162)
+  
 
     # The priority color depends on the level of importance of the task
     if (priority.get() == 1) :
@@ -115,10 +122,12 @@ Function : see_comment
 @return : void
         shows the comment associated with the current task
 """
-def see_comment(counter, comment, current_cl):
+def see_comment(counter, comment, col_com, current_cl):
     i = int(counter.get())
-    comment.set(current_cl.col_values(4)[i])
+    comment.set(current_cl.col_values(col_com)[i])
     
+
+
 
 """
 Function : add_comment
@@ -129,6 +138,9 @@ Function : add_comment
 """
 def add_comment(new_comment_box):
     new_comment_box.place(x=320, y=70)
+
+
+
 
     
 # ________________________________________________________________________________
@@ -145,7 +157,7 @@ Function : print_check_list
 @return : void
         prints on the interface
 """
-def Print_Check_List(current_check_list, over) :
+def Print_Check_List(current_check_list, over, aircraft_type) :
     
     over = False
     
@@ -161,6 +173,15 @@ def Print_Check_List(current_check_list, over) :
     
     # Number of lines in the checklist
     n = current_cl.nrows
+    
+    
+    # Depending on the DR400 used, the comments will be added in a different column in the checklist sheet
+    if (aircraft_type == "DR400-1"):
+        col_com = 4 ;
+    if (aircraft_type == "DR400-2"):
+        col_com = 5 ;
+    if (aircraft_type == "DR400-3"):
+        col_com = 6 ;
     
     #===============================================================================
     # Settings of the window
@@ -236,14 +257,14 @@ def Print_Check_List(current_check_list, over) :
     # Validation button :
         # is hit when current task is completed
         # calls the next_window function
-    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, new_comment, new_comment_box,current_task_frame,priority_label,font3,over)).place(x=350, y=363)
+    Validate = Button(Check_list, text = '  OK  ', fg='green', command=lambda :next_window(counter,n, Check_list, current_cl, prev_task, current_task, priority, action, next_task, comment, col_com, new_comment, new_comment_box,current_task_frame,priority_label,font3,over)).place(x=350, y=363)
    
     # See_Comment button :
         # is hit when the pilote wants to see the comments for the current task
-    if (current_cl.col_values(4)[i] == '') : # The button is disabled if there is no comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = DISABLED).place(x=545, y=162)
+    if (current_cl.col_values(col_com)[i] == '') : # The button is disabled if there is no comment to see for the current task
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=545, y=162)
     else : # The button is enabled if there is a comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, current_cl), state = NORMAL).place(x=545, y=162)
+        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=545, y=162)
       
     # Add_Comment button :
         # is hit when the pilote wants to add a comment for the current task
@@ -261,4 +282,4 @@ def Print_Check_List(current_check_list, over) :
  
  
 # TO BE DELETED
-Print_Check_List(names_cl[0], False) # Test to see if functions work
+Print_Check_List(names_cl[0], False, "DR400-2") # Test to see if functions work
