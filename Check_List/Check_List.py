@@ -146,6 +146,7 @@ def add_comment(new_comment_box):
 # ________________________________________________________________________________
 #
 # Displays the tasks on the interface for the pilote to see
+# Except for the landing checklists 
 # ________________________________________________________________________________
 
 """
@@ -277,9 +278,104 @@ def Print_Check_List(current_check_list, over, aircraft_type) :
 #    Check_list.destroy()
 
 
+
+
+# ________________________________________________________________________________
+#
+# Displays the tasks on the interface for the pilote to see
+# For the landing checklists
+# ________________________________________________________________________________
+
+"""
+Function : Print_Landing_Check_List
+           prints the tasks of the check list on the interface during landing
+@param : string - current_check_list
+         name of check list considered
+         is an element of names_cl
+@return : void
+        prints on the interface
+"""
+def Print_Landing_Check_List(current_check_list, over, aircraft_type) :
+    
+    over = False
+    
+    # The check list considered must be defined in the database
+    if (current_check_list not in names_cl): 
+        return "Error" 
+    
+    # We go in the correct tab
+    current_cl = Check_Lists.sheet_by_name(current_check_list)    
+    
+    # Name of the checklist
+    title = current_cl.col_values(0)[0]
+    
+    # Number of lines in the checklist
+    n = current_cl.nrows
+    
+    
+    # Depending on the DR400 used, the comments will be added in a different column in the checklist sheet
+    if (aircraft_type == "DR400-1"):
+        col_com = 4 ;
+    if (aircraft_type == "DR400-2"):
+        col_com = 5 ;
+    if (aircraft_type == "DR400-3"):
+        col_com = 6 ;
+    
+    #===============================================================================
+    # Settings of the window
+    
+    #Opening of the first interface
+    Check_list = Tk()
+    Check_list.title('Copilote virtuel')
+    Check_list.geometry("750x400")
+    
+    #Font allows to choose the police, the size and the type of our text. We set two types that we will use
+    font1 = tkFont.Font(family='Helvetica', size=36, weight='bold')
+    font2 = tkFont.Font(family='Helvetica', size=14)
+    font3 = tkFont.Font(family='Helvetica', size = 18)
+    
+    #We set the title of this interface
+    Title1 = Label(Check_list, text=title, pady=3, height=2, font=font1, fg='red')
+    Title1.pack()
+    
+    #Tasks to perform
+    task_frame = LabelFrame(Check_list, height=300, text="Tâches à effectuer")
+    task_frame.grid_propagate(0)
+    task_frame.pack(fill="both", expand="no", padx=100)
+    
+    # The height were the task will be positioned
+    pos = 5 ;
+
+    # We print all the tasks at once
+    for i in range (2,n) :
+        space = ["." for j in range (37-len(current_cl.col_values(2)[i]))] ; 
+        task = StringVar(value = current_cl.col_values(2)[i] + ''.join(space))
+        task_label = Label(task_frame, textvariable = task, font=font2, fg='black').place(x=30, y=pos)
+        action = StringVar(value = current_cl.col_values(3)[i])
+        action_label = Label(task_frame, textvariable = action, font=font2, fg='blue').place(x=200, y=pos)
+        pos += 20
+        
+
+    
+    #===============================================================================
+    # Runs the tkinter interface
+    Check_list.mainloop()
+#    Check_list.destroy()
+
+
+
+
+
+
+
+
+
+
+
 # ________________________________________________________________________________ 
  
  
  
 # TO BE DELETED
 Print_Check_List(names_cl[0], False, "DR400-2") # Test to see if functions work
+Print_Landing_Check_List(names_cl[-1], False, "DR400-2")
