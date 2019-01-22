@@ -72,10 +72,10 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
         print(new_comment.get())
     #    cell = current_cl.col_values(col_com)[i]
     #    cell.write(new_comment.get())
-    #    current_cl.write(i,col_com, new_comment.get())
+    #    current_cl.write(i,col_com, new_comment.get())"""
     new_comment.set('')
     new_comment_box.place(x=1000, y=1000)   
-"""
+    
     # Modify tasks displayed
     if (counter.get()<n-1):
          prev_task.set(current_cl.col_values(2)[i-1])
@@ -96,12 +96,12 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
         # over = True
         # return over
         
-    # The state of the See_Comment button is updated
+""" # The state of the See_Comment button is updated
     if (current_cl.col_values(col_com)[i] == '') : # The button is disabled if there is no comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=545, y=162)
+        See_Comment = Button(Check_list, text = 'Voir commentaires', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=520, y=162)
         comment.set(current_cl.col_values(col_com)[i]) # The comment section is erased if there is no comment associated
     else : # The button is enabled if there is a comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=545, y=162)
+        See_Comment = Button(Check_list, text = 'Voir commentaires', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=520, y=162)
   
 
     # The priority color depends on the level of importance of the task
@@ -111,6 +111,7 @@ def next_window(counter,n, Check_list, current_cl, prev_task, current_task, prio
         priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='orange').place(x=0, y=5)
     else :
         priority_label = Label(current_task_frame, textvariable = priority, font=font3, fg='yellow').place(x=0, y=5)
+"""
 
 
 """
@@ -263,13 +264,13 @@ def Print_Check_List(current_check_list, over, aircraft_type) :
     # See_Comment button :
         # is hit when the pilote wants to see the comments for the current task
     if (current_cl.col_values(col_com)[i] == '') : # The button is disabled if there is no comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=545, y=162)
+        See_Comment = Button(Check_list, text = 'Voir commentaires', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = DISABLED).place(x=520, y=162)
     else : # The button is enabled if there is a comment to see for the current task
-        See_Comment = Button(Check_list, text = 'See comments', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=545, y=162)
+        See_Comment = Button(Check_list, text = 'Voir commentaires', fg='orange', command=lambda:see_comment(counter, comment, col_com, current_cl), state = NORMAL).place(x=520, y=162)
       
     # Add_Comment button :
         # is hit when the pilote wants to add a comment for the current task
-    Add_Comment = Button(Check_list, text = 'Add comments', fg='orange', command=lambda:add_comment(new_comment_box)).place(x=544, y=182)
+    Add_Comment = Button(Check_list, text = 'Ajouter commentaire', fg='orange', command=lambda:add_comment(new_comment_box)).place(x=505, y=182)
 
 
     #===============================================================================
@@ -377,5 +378,5 @@ def Print_Landing_Check_List(current_check_list, over, aircraft_type) :
  
  
 # TO BE DELETED
-Print_Check_List(names_cl[0], False, "DR400-2") # Test to see if functions work
-Print_Landing_Check_List(names_cl[-1], False, "DR400-2")
+#Print_Check_List(names_cl[0], False, "DR400-2") # Test to see if functions work
+#Print_Landing_Check_List(names_cl[-1], False, "DR400-2")
