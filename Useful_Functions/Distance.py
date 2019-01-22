@@ -1,5 +1,7 @@
 import math
 #Calculation of the distance between two coordinates
+
+
 def distance(pos_dep,pos_arr):
     lat1=pos_dep[0]
     long1=pos_dep[1]
