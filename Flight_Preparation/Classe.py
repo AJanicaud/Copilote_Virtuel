@@ -18,7 +18,6 @@ from tkinter.ttk import Combobox
 #Time that computes the time needed in order to go from airport a to airport b
 def Time(h0,m0,am0,Aircraft_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airport_Parameters_Data):
     v = Aircraft_Parameters_Class.get_cruise_speed(Aircraft_Parameters_Data)
-    #v = cruise_speed #vitesse de croisière en km/h
     latd = Departure_Airport_Parameters_Class.get_latitude(Departure_Airport_Parameters_Data)
     longd = Departure_Airport_Parameters_Class.get_longitude(Departure_Airport_Parameters_Data)
     lata = Arrival_Airport_Parameters_Class.get_latitude(Arrival_Airport_Parameters_Data)

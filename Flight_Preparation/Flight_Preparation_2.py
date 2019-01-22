@@ -53,7 +53,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         #We set the label concerning the distance to achieve
         font0 = tkFont.Font(family='Helvetica', size=14,underline = TRUE)
         
-        #state = data['weather'][0]['main']
+        state = data['weather'][0]['main']
         temp = int(10*(data['main']['temp']-273.15))/10.
         pressure = int(data['main']['pressure'])
         visibility = int(data['visibility'])
@@ -70,7 +70,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         
         Weather_departure_t0.set("Météo actuelle :")
         #State of the sky
-        #Weather_state.set(state)
+        Weather_state.set(state)
         #Pressure
         Weather_pressure_P.set("P = ")
         Weather_pressure_t0.set(pressure)
@@ -265,7 +265,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         data2=r2.json()
         previsions = data2['list'][1]
         font0 = tkFont.Font(family='Helvetica', size=14,underline = TRUE)
-        #state=data['weather'][0]['main']
+        state=data['weather'][0]['main']
         temp = int(10*(data['main']['temp']-273.15))/10.
         pressure = int(data['main']['pressure'])
         visibility = int(data['visibility'])
@@ -279,7 +279,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
        
        
         #State of the sky
-        #Weather_state.set(state)
+        Weather_state.set(state)
         #Pressure
         Weather_pressure_P.set("P = ")
         Weather_pressure_t0.set(pressure)
@@ -379,7 +379,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         Sunset.set("Coucher du soleil :")
         Sunset_time.set(converted_time_sunset)
         
-        Info_Airport = Button(Mission_Parameters_2, text = 'Infos Aéroport', fg='green', command=lambda :callback5(Flight_Parameters_Data,Arrival_Airport_Parameters_Data)).place(x=340, y=533)
+        Info_Airport = Button(Mission_Parameters_2, text = 'Infos Aéroport', fg='green', command=lambda :Infos_Arrival_Airport(Flight_Parameters_Data,Arrival_Airport_Parameters_Data)).place(x=340, y=533)
         
     def Infos_Departure_Airport(Flight_Parameters_Data,Departure_Airport_Parameters_Data):
         
@@ -420,6 +420,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         #Public air traffic (circulation aérienne publique)
         CAP = Label(frame_general_info, text="CAP : "+Classe.Departure_Airport_Parameters_Class.get_CAP(Departure_Airport_Parameters_Data), font=font_infos)
         CAP.place(x=10,y=70)
+        #Magnetic Variation (Déclinaison magnétique)
         VAR = Label(frame_general_info, text="VAR : "+Classe.Departure_Airport_Parameters_Class.get_VAR(Departure_Airport_Parameters_Data), font=font_infos)
         VAR.place(x=480,y=70)
         #At which altitude is the airport
@@ -428,6 +429,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         #Air to Air communications
         AA = Label(frame_general_info, text="A/A : "+str(Classe.Departure_Airport_Parameters_Class.get_AA(Departure_Airport_Parameters_Data)), font=font_infos)
         AA.place(x=480,y=90)
+        #Direction of the runway
         Direction = Label(frame_general_info, text="Direction : "+Classe.Departure_Airport_Parameters_Class.get_direction(Departure_Airport_Parameters_Data), font=font_infos)
         Direction.place(x=10,y=130)
         #What is the phone numer of the airport
@@ -436,299 +438,434 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         #The email adress of the airport
         Email = Label(frame_general_info, text="E-mail : "+Classe.Departure_Airport_Parameters_Class.get_mail(Departure_Airport_Parameters_Data), font=font_infos)
         Email.place(x=10,y=110)
+        #Refuelling (Avitaillement)
         AVT = Label(frame_general_info, text="AVT : "+Classe.Departure_Airport_Parameters_Class.get_avt(Departure_Airport_Parameters_Data), font=font_infos)
         AVT.place(x=530,y=130)
+        
         #______________________________________________________________________
-        #We set the frame that will contain all the pist information about the airport
+        #We set the frame that will contain all the runway information about the airport
         frame_pistes_info = LabelFrame(Infos, height=200, text="Pistes", fg='red')
         frame_pistes_info.grid_propagate(0)
         frame_pistes_info.pack(fill="both", expand="no", padx=50)
+        
+        #We set all the runway information about the airport belonging to the previous frame
+        
+        #Number of runways
         Num_pistes = Label(frame_pistes_info, text="Nombre de pistes : "+str(int(Classe.Departure_Airport_Parameters_Class.get_num_pistes(Departure_Airport_Parameters_Data))), font=font_infos)
         Num_pistes.place(x=250,y=10)
+        #Runway 1
         RWY1 = Label(frame_pistes_info, text="RWY1 : "+str(Classe.Departure_Airport_Parameters_Class.get_RWY1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         RWY1.place(x=10,y=30)
+        #Runway 2
         RWY2 = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Departure_Airport_Parameters_Class.get_RWY2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         RWY2.place(x=500,y=30)
+        #The runway prefered by the organisation
         Preference = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Departure_Airport_Parameters_Class.get_preference_1(Departure_Airport_Parameters_Data)), font=font_infos)
         Preference.place(x=300,y=50)
+        #Magnetic orientation of the runway 1
         QFU1 = Label(frame_pistes_info, text="QFU1 : "+str(Classe.Departure_Airport_Parameters_Class.get_QFU1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         QFU1.place(x=10,y=70)
+        #MAgnetic orientation of the runway 2
         QFU2 = Label(frame_pistes_info, text="QFU2 : "+str(Classe.Departure_Airport_Parameters_Class.get_QFU2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         QFU2.place(x=500,y=70)
+        #Dimensions of the runway
         Dimensions = Label(frame_pistes_info, text="Dimensions : "+str(Classe.Departure_Airport_Parameters_Class.get_dimensions_1(Departure_Airport_Parameters_Data)), font=font_infos)
         Dimensions.place(x=10,y=90)
+        #Nature of the ground of the runway
         Nature = Label(frame_pistes_info, text="Nature : "+str(Classe.Departure_Airport_Parameters_Class.get_nature_1(Departure_Airport_Parameters_Data)), font=font_infos)
         Nature.place(x=500,y=90)
+        #Take off distance available 1
         TODA1 = Label(frame_pistes_info, text="TODA1 : "+str(Classe.Departure_Airport_Parameters_Class.get_TODA1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         TODA1.place(x=10,y=110)
+        #Take-off distance available 2
         TODA2 = Label(frame_pistes_info, text="TODA2 : "+str(Classe.Departure_Airport_Parameters_Class.get_TODA2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         TODA2.place(x=500,y=110)
+        #Accelerate stop distance available 1
         ASDA1 = Label(frame_pistes_info, text="ASDA1 : "+str(Classe.Departure_Airport_Parameters_Class.get_ASDA1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         ASDA1.place(x=10,y=130)
+        #Acceleration distance available 2
         ASDA2 = Label(frame_pistes_info, text="ASDA2 : "+str(Classe.Departure_Airport_Parameters_Class.get_ASDA2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         ASDA2.place(x=500,y=130)
+        #Landing distance available 1
         LDA1 = Label(frame_pistes_info, text="LDA1 : "+str(Classe.Departure_Airport_Parameters_Class.get_LDA1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         LDA1.place(x=10,y=150)
+        #Landing distance available 2
         LDA2 = Label(frame_pistes_info, text="LDA2 : "+str(Classe.Departure_Airport_Parameters_Class.get_LDA2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         LDA2.place(x=500,y=150)
+        #Runway 1
         RWY1 = Label(frame_pistes_info, text="RWY1 : "+str(Classe.Departure_Airport_Parameters_Class.get_RWY1_1(Departure_Airport_Parameters_Data)), font=font_infos)
         RWY1.place(x=10,y=150)
+        #Runway 2
         RWY2 = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Departure_Airport_Parameters_Class.get_RWY2_1(Departure_Airport_Parameters_Data)), font=font_infos)
         RWY2.place(x=500,y=150)
         
+        #We get the number of dangers explained for the airport that we consider
         p = int(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[0])
-        print(p)
+        #Depending on the number of dangers we can find out how to get the rest of the info we need
+        
         if (p==2):
+             #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=110, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            
+            #Number of dangers
             Nombre = Label(frame_dangers_info, text="Nombre de dangers : "+str(Classe.Departure_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[0]), font=font_infos)
             Nombre.place(x=10,y=10)
+            #Description of danger 1
             Danger_1 = Label(frame_dangers_info, text="1. "+str(Classe.Departure_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[1]), font=font_infos)
             Danger_1.place(x=10,y=30)
+            #Description of danger 2
             Danger_2 = Label(frame_dangers_info, text="2. "+str(Classe.Departure_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[2]), font=font_infos)
             Danger_2.place(x=10,y=50)
             Danger_2.configure(wraplength=600)
             
+             #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=240, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #Description of the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #Description of the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=50)
             Consigne_2.configure(wraplength=600)
+            #Description of the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=90)
             Consigne_3.configure(wraplength=600)
+            #Description of the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=130)
             Consigne_4.configure(wraplength=600)
+            #Description of the instruction 5
             Consigne_5 = Label(frame_consignes_info, text="5. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[5]), font=font_infos)
             Consigne_5.place(x=10,y=170)
             Consigne_5.configure(wraplength=600)
+            #Description of the instruction 6
             Consigne_6 = Label(frame_consignes_info, text="6. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[6]), font=font_infos)
             Consigne_6.place(x=10,y=210)
             Consigne_6.configure(wraplength=600)
+        #In the case where there is only one danger
         elif (p==1):
+            #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=80, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            
+            #We display the number of dangers
             Nombre = Label(frame_dangers_info, text="Nombre de dangers : "+str(Classe.Departure_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[0]), font=font_infos)
             Nombre.place(x=10,y=10)
+            #We describe the danger
             Danger_1 = Label(frame_dangers_info, text="1. "+str(Classe.Departure_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[1]), font=font_infos)
             Danger_1.place(x=10,y=30)
             
+            #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=200, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #We describe the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #We describe the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=50)
             Consigne_2.configure(wraplength=600)
+            #We describe the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=90)
             Consigne_3.configure(wraplength=600)
+            #We describe the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=130)
             Consigne_4.configure(wraplength=600)
 
+        #In all the other cases (basically there is no danger)
         else:
+            #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=60, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            #We set the number of dangers to zero
             Nombre = Label(frame_dangers_info, text="Aucun danger", font=font_infos)
             Nombre.place(x=10,y=10)
             
+            #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=160, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #We describe the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #We describe the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=30)
             Consigne_2.configure(wraplength=600)
+            #We describe the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=50)
             Consigne_3.configure(wraplength=600)
+            #We describe the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=70)
             Consigne_4.configure(wraplength=600)
+            #We describe the instruction 5
             Consigne_5 = Label(frame_consignes_info, text="5. "+str(Classe.Departure_Airport_Parameters_Class.get_consignes(Departure_Airport_Parameters_Data)[5]), font=font_infos)
             Consigne_5.place(x=10,y=90)
             Consigne_5.configure(wraplength=600)
             
     
-    def callback5(Flight_Parameters_Data,Arrival_Airport_Parameters_Data):
+    def Infos_Arrival_Airport(Flight_Parameters_Data,Arrival_Airport_Parameters_Data):
+                
+        #We set a new page of the interface that will pop up with all the information needed for the departure airport
+        
+        #We set the interface
         Infos = Tk()
         Infos.title("Informations concernant l'aéroport d'arrivée")
         Infos.geometry("750x800")
         font_infos = tkFont.Font(family='Helvetica', size=24, weight='bold')
+        
+        #______________________________________________________________________
+        #We set the frame that will contain all the general information about the airport
         frame_general_info = LabelFrame(Infos, height=180, text="Aéroport de  "+Classe.Flight_Parameters_Class.get_arrival_airport(Flight_Parameters_Data), fg='red')
         frame_general_info.grid_propagate(0)
         frame_general_info.pack(fill="both", expand="no", padx=50)
+        
+        #Name of this airport
         Name = Label(frame_general_info, text="Nom : "+Classe.Arrival_Airport_Parameters_Class.get_name(Arrival_Airport_Parameters_Data), font=font_infos)
         Name.place(x=10,y=10)
+        #The identification code of this airport
         Identification = Label(frame_general_info, text="Code d'identification : "+Classe.Arrival_Airport_Parameters_Class.get_identification(Arrival_Airport_Parameters_Data), font=font_infos)
         Identification.place(x=360,y=10)
+        #The OACi code of this airport
         CodeOACI = Label(frame_general_info, text="Code OACI : "+Classe.Arrival_Airport_Parameters_Class.get_codeOACI(Arrival_Airport_Parameters_Data), font=font_infos)
         CodeOACI.place(x=10,y=30)
+        #Name of the owner of this airport
         Exploitant = Label(frame_general_info, text="Exploitant : "+Classe.Arrival_Airport_Parameters_Class.get_exploitant(Arrival_Airport_Parameters_Data), font=font_infos)
         Exploitant.place(x=430,y=30)
+        #
         CAA = Label(frame_general_info, text="CAA : "+Classe.Arrival_Airport_Parameters_Class.get_CAA(Arrival_Airport_Parameters_Data), font=font_infos)
         CAA.place(x=10,y=50)
+        #Information and flight support regional office (Bureau regional d'information et d'assistance au vol)
         BRIA = Label(frame_general_info, text="BRIA : "+Classe.Arrival_Airport_Parameters_Class.get_BRIA(Arrival_Airport_Parameters_Data), font=font_infos)
         BRIA.place(x=500,y=50)
+        #Public air traffic (circulation aérienne publique)
         CAP = Label(frame_general_info, text="CAP : "+Classe.Arrival_Airport_Parameters_Class.get_CAP(Arrival_Airport_Parameters_Data), font=font_infos)
         CAP.place(x=10,y=70)
+        #Magnetic Variation (Déclinaison magnétique)
         VAR = Label(frame_general_info, text="VAR : "+Classe.Arrival_Airport_Parameters_Class.get_VAR(Arrival_Airport_Parameters_Data), font=font_infos)
         VAR.place(x=500,y=70)
+        #Altitude at which the airport is
         Altitude = Label(frame_general_info, text="Altitude : "+Classe.Arrival_Airport_Parameters_Class.get_altitude(Arrival_Airport_Parameters_Data), font=font_infos)
         Altitude.place(x=10,y=90)
+        #Air to Air communications
         AA = Label(frame_general_info, text="A/A : "+str(Classe.Arrival_Airport_Parameters_Class.get_AA(Arrival_Airport_Parameters_Data)), font=font_infos)
         AA.place(x=500,y=90)
+        #Direction of the runway
         Direction = Label(frame_general_info, text="Direction : "+Classe.Arrival_Airport_Parameters_Class.get_direction(Arrival_Airport_Parameters_Data), font=font_infos)
         Direction.place(x=10,y=130)
+        #Telephone of the airport
         Tel = Label(frame_general_info, text="Téléphone : "+str(int(Classe.Arrival_Airport_Parameters_Class.get_tel(Arrival_Airport_Parameters_Data))), font=font_infos)
         Tel.place(x=450,y=110)
+        #Email of the airport
         Email = Label(frame_general_info, text="E-mail : "+Classe.Arrival_Airport_Parameters_Class.get_mail(Arrival_Airport_Parameters_Data), font=font_infos)
         Email.place(x=10,y=110)
+        #Refuelling (Avitaillement)
         AVT = Label(frame_general_info, text="AVT : "+Classe.Arrival_Airport_Parameters_Class.get_avt(Arrival_Airport_Parameters_Data), font=font_infos)
         AVT.place(x=530,y=130)
         
+        #______________________________________________________________________
+        #We set the frame that will contain all the runway information about the airport
         frame_pistes_info = LabelFrame(Infos, height=200, text="Pistes", fg='red')
         frame_pistes_info.grid_propagate(0)
         frame_pistes_info.pack(fill="both", expand="no", padx=50)
+        
+        #We set all the runway information about the airport belonging to the previous frame        
+        
+        #Number of runways
         Num_pistes = Label(frame_pistes_info, text="Nombre de pistes : "+str(int(Classe.Arrival_Airport_Parameters_Class.get_num_pistes(Arrival_Airport_Parameters_Data))), font=font_infos)
         Num_pistes.place(x=250,y=10)
+        #Runway 1
         RWY1 = Label(frame_pistes_info, text="RWY1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_RWY1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         RWY1.place(x=10,y=30)
+        #Runway 2
         RWY2 = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_RWY2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         RWY2.place(x=500,y=30)
+        #Preference for the runway
         Preference = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_preference_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         Preference.place(x=300,y=50)
+        #Magnetic orientation of the runway 1
         QFU1 = Label(frame_pistes_info, text="QFU1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_QFU1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         QFU1.place(x=10,y=70)
+        #Magnetic orientation of the runway 2
         QFU2 = Label(frame_pistes_info, text="QFU2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_QFU2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         QFU2.place(x=500,y=70)
+        #Dimensions of the runway
         Dimensions = Label(frame_pistes_info, text="Dimensions : "+str(Classe.Arrival_Airport_Parameters_Class.get_dimensions_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         Dimensions.place(x=10,y=90)
+        #Nature of the ground available for the runway
         Nature = Label(frame_pistes_info, text="Nature : "+str(Classe.Arrival_Airport_Parameters_Class.get_nature_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         Nature.place(x=500,y=90)
+        #Take off distance available 1
         TODA1 = Label(frame_pistes_info, text="TODA1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_TODA1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         TODA1.place(x=10,y=110)
+        #Take off distance available 2
         TODA2 = Label(frame_pistes_info, text="TODA2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_TODA2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         TODA2.place(x=500,y=110)
+        #Acceleration stop distance available 1
         ASDA1 = Label(frame_pistes_info, text="ASDA1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_ASDA1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         ASDA1.place(x=10,y=130)
+        #Acceleration stop distance available 2
         ASDA2 = Label(frame_pistes_info, text="ASDA2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_ASDA2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         ASDA2.place(x=500,y=130)
+        #Landing distance available 1
         LDA1 = Label(frame_pistes_info, text="LDA1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_LDA1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         LDA1.place(x=10,y=150)
+        #Landing distance available 2
         LDA2 = Label(frame_pistes_info, text="LDA2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_LDA2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         LDA2.place(x=500,y=150)
+        #Runway 1
         RWY1 = Label(frame_pistes_info, text="RWY1 : "+str(Classe.Arrival_Airport_Parameters_Class.get_RWY1_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         RWY1.place(x=10,y=150)
+        #Runway 2
         RWY2 = Label(frame_pistes_info, text="RWY2 : "+str(Classe.Arrival_Airport_Parameters_Class.get_RWY2_1(Arrival_Airport_Parameters_Data)), font=font_infos)
         RWY2.place(x=500,y=150)
         
         p = int(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[0])
         if (p==2):
+            #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=100, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            
+            #We display the number of dangers
             Nombre = Label(frame_dangers_info, text="Nombre de dangers : "+str(Classe.Arrival_Airport_Parameters_Class.get_dangers(Departure_Airport_Parameters_Data)[0]), font=font_infos)
             Nombre.place(x=10,y=10)
+            #Description of danger 1
             Danger_1 = Label(frame_dangers_info, text="1. "+str(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[1]), font=font_infos)
             Danger_1.place(x=10,y=30)
+            #Description of danger 2
             Danger_2 = Label(frame_dangers_info, text="2. "+str(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[2]), font=font_infos, height = 50)
             Danger_2.place(x=10,y=50)
             
+            #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=240, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #We describe the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #We describe the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=50)
             Consigne_2.configure(wraplength=600)
+            #We describe the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=90)
             Consigne_3.configure(wraplength=600)
+            #We describe the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=130)
             Consigne_4.configure(wraplength=600)
+            #We describe the instruction 5
             Consigne_5 = Label(frame_consignes_info, text="5. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[5]), font=font_infos)
             Consigne_5.place(x=10,y=170)
             Consigne_5.configure(wraplength=600)
+            #We describe the instruction 6
             Consigne_6 = Label(frame_consignes_info, text="6. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[6]), font=font_infos)
             Consigne_6.place(x=10,y=210)
             Consigne_6.configure(wraplength=600)
         elif (p==1):
+            #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=80, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            
+            #We display the number of dangers
             Nombre = Label(frame_dangers_info, text="Nombre de dangers : "+str(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[0]), font=font_infos)
             Nombre.place(x=10,y=10)
+            #Description of danger 1
             Danger_1 = Label(frame_dangers_info, text="1. "+str(Classe.Arrival_Airport_Parameters_Class.get_dangers(Arrival_Airport_Parameters_Data)[1]), font=font_infos)
             Danger_1.place(x=10,y=30)
             
+            #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=200, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #We describe the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #We describe the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=50)
             Consigne_2.configure(wraplength=600)
+            #We describe the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=90)
             Consigne_3.configure(wraplength=600)
+            #We describe the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=130)
             Consigne_4.configure(wraplength=600)
         else:
+            #______________________________________________________________________
+             #We set the frame that will contain all the dangers about the airport
             frame_dangers_info = LabelFrame(Infos, height=60, text="Dangers", fg='red')
             frame_dangers_info.grid_propagate(0)
             frame_dangers_info.pack(fill="both", expand="no", padx=50)
+            #We set the number of dangers to zero
             Nombre = Label(frame_dangers_info, text="Aucun danger", font=font_infos)
             Nombre.place(x=10,y=10)
             
+            #______________________________________________________________________
+             #We set the frame that will contain all the instructions about the airport
             frame_consignes_info = LabelFrame(Infos, height=160, text="Consignes", fg='red')
             frame_consignes_info.grid_propagate(0)
             frame_consignes_info.pack(fill="both", expand="no", padx=50)            
             
+            #We describe the instruction 1
             Consigne_1 = Label(frame_consignes_info, text="1. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[1]), font=font_infos)
             Consigne_1.place(x=10,y=10)
             Consigne_1.configure(wraplength=600)
+            #We describe the instruction 2
             Consigne_2 = Label(frame_consignes_info, text="2. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[2]), font=font_infos)
             Consigne_2.place(x=10,y=30)
             Consigne_2.configure(wraplength=600)
+            #We describe the instruction 3
             Consigne_3 = Label(frame_consignes_info, text="3. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[3]), font=font_infos)
             Consigne_3.place(x=10,y=50)
             Consigne_3.configure(wraplength=600)
+            #We describe the instruction 4
             Consigne_4 = Label(frame_consignes_info, text="4. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[4]), font=font_infos)
             Consigne_4.place(x=10,y=70)
             Consigne_4.configure(wraplength=600)
+            #We describe the instruction 5
             Consigne_5 = Label(frame_consignes_info, text="5. "+str(Classe.Arrival_Airport_Parameters_Class.get_consignes(Arrival_Airport_Parameters_Data)[5]), font=font_infos)
             Consigne_5.place(x=10,y=90)
             Consigne_5.configure(wraplength=600)
 
-    
-    def get_consignes(self):
-        return self.consignes
-        
+
     #Opening of the second interface
     Mission_Parameters_2 = Tk()
     Mission_Parameters_2.title('Plan de vol')
