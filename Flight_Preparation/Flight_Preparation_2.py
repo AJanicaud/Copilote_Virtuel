@@ -29,7 +29,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
     
     #function called by the user when he pressed the button "Aéroport de départ"
     #Input : Flight_Parameters_Data : a classe that contains all the data concerning the flight
-    def callback1(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label):
+    def Departure_Airport(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label):
         
         #We collect the name of the departure airport. We concatenate this string to get str = name_of_the_airport.jpg
         str ="../Databases/"+ Classe.Flight_Parameters_Class.get_departure_airport(Flight_Parameters_Data)+".jpg"
@@ -113,7 +113,8 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         Weather_wind_direction.set("Direction :")
         Weather_wind_direction_t0.set(wind_deg)
         Weather_wind_direction_unit.set("°")
-
+        
+        #We compute the time for the weather forecast
         prevision_hour = previsions['dt_txt']
         h = int(prevision_hour[11])*10+int(prevision_hour[12])
         m = int(prevision_hour[14])*10+int(prevision_hour[15])
@@ -123,6 +124,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         else:
             str = 'AM'
         
+        #Time for the weather forecast
         Weather_departure_t3.set("Prévision")
         Weather_departure_t3h.set(h)
         Weather_departure_t3m.set(":00"+str)
@@ -169,12 +171,13 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         Sunset.set("Coucher du soleil :")
         Sunset_time.set(converted_time_sunset)
         
-        Info_Airport = Button(Mission_Parameters_2, text = 'Infos Aéroport', fg='green', command=lambda :callback4(Flight_Parameters_Data,Departure_Airport_Parameters_Data)).place(x=340, y=533)
+        Info_Airport = Button(Mission_Parameters_2, text = 'Infos Aéroport', fg='green', command=lambda :Infos_Departure_Airport(Flight_Parameters_Data,Departure_Airport_Parameters_Data)).place(x=340, y=533)
     
     #function called by the user when he pressed the button "Trajectoire"
     #Input : Flight_Parameters_Data : a classe that contains all the data concerning the flight
-    def callback2(Flight_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit):
+    def Trajectory(Flight_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit):
         
+        #We set all the previous weather data to none in order to clear the interface
         Weather_departure_t0.set('')
         Weather_state.set('')
         Weather_pressure.set('')
@@ -220,7 +223,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         Weather_visibility_unit.set('')
         
         #We collect the name of the departure airport. We concatenate this string to get str = trajectory.jpg
-        str = "../Databases/Montauban.jpg"
+        str = "../Databases/Global_Trajectory.jpg"
         #We delete the first canvas that contains the previous picture
         cadre.delete(ALL)
         #We open the picture
@@ -237,7 +240,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         
     #function called by the user when he pressed the button "Aéroport d'arrivée"
     #Input : Flight_Parameters_Data : a classe that contains all the data concerning the flight
-    def callback3(Flight_Parameters_Data,Arrival_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label):
+    def Arrival_Airport(Flight_Parameters_Data,Arrival_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label):
         
         #We collect the name of the departure airport. We concatenate this string to get str = name_of_the_airport.jpg
         
@@ -378,43 +381,65 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
         
         Info_Airport = Button(Mission_Parameters_2, text = 'Infos Aéroport', fg='green', command=lambda :callback5(Flight_Parameters_Data,Arrival_Airport_Parameters_Data)).place(x=340, y=533)
         
-    def callback4(Flight_Parameters_Data,Departure_Airport_Parameters_Data):
+    def Infos_Departure_Airport(Flight_Parameters_Data,Departure_Airport_Parameters_Data):
+        
+        #We set a new page of the interface that will pop up with all the information needed for the departure airport
+        
+        #We set the interface
         Infos = Tk()
         Infos.title("Informations concernant l'aéroport de départ")
         Infos.geometry("750x800")
         font_infos = tkFont.Font(family='Helvetica', size=24, weight='bold')
+        
+        #______________________________________________________________________
+        #We set the frame that will contain all the general information about the airport
         frame_general_info = LabelFrame(Infos, height=180, text="Aéroport de  "+Classe.Flight_Parameters_Class.get_departure_airport(Flight_Parameters_Data), fg='red')
         frame_general_info.grid_propagate(0)
         frame_general_info.pack(fill="both", expand="no", padx=50)
+        
+        #We set all the general information about the airport belonging to the previous frame
+        
+        #Name of the airport
         Name = Label(frame_general_info, text="Nom : "+Classe.Departure_Airport_Parameters_Class.get_name(Departure_Airport_Parameters_Data), font=font_infos)
         Name.place(x=10,y=10)
+        #The identification code of the airport
         Identification = Label(frame_general_info, text="Code d'identification : "+Classe.Departure_Airport_Parameters_Class.get_identification(Departure_Airport_Parameters_Data), font=font_infos)
         Identification.place(x=360,y=10)
+        #The OACI code of the airport
         CodeOACI = Label(frame_general_info, text="Code OACI : "+Classe.Departure_Airport_Parameters_Class.get_codeOACI(Departure_Airport_Parameters_Data), font=font_infos)
         CodeOACI.place(x=10,y=30)
+        #Who is the owner of the airport
         Exploitant = Label(frame_general_info, text="Exploitant : "+Classe.Departure_Airport_Parameters_Class.get_exploitant(Departure_Airport_Parameters_Data), font=font_infos)
         Exploitant.place(x=430,y=30)
+        #
         CAA = Label(frame_general_info, text="CAA : "+Classe.Departure_Airport_Parameters_Class.get_CAA(Departure_Airport_Parameters_Data), font=font_infos)
         CAA.place(x=10,y=50)
+        #Information and flight support regional office (Bureau regional d'information et d'assistance au vol)
         BRIA = Label(frame_general_info, text="BRIA : "+Classe.Departure_Airport_Parameters_Class.get_BRIA(Departure_Airport_Parameters_Data), font=font_infos)
         BRIA.place(x=480,y=50)
+        #Public air traffic (circulation aérienne publique)
         CAP = Label(frame_general_info, text="CAP : "+Classe.Departure_Airport_Parameters_Class.get_CAP(Departure_Airport_Parameters_Data), font=font_infos)
         CAP.place(x=10,y=70)
         VAR = Label(frame_general_info, text="VAR : "+Classe.Departure_Airport_Parameters_Class.get_VAR(Departure_Airport_Parameters_Data), font=font_infos)
         VAR.place(x=480,y=70)
+        #At which altitude is the airport
         Altitude = Label(frame_general_info, text="Altitude : "+Classe.Departure_Airport_Parameters_Class.get_altitude(Departure_Airport_Parameters_Data), font=font_infos)
         Altitude.place(x=10,y=90)
+        #Air to Air communications
         AA = Label(frame_general_info, text="A/A : "+str(Classe.Departure_Airport_Parameters_Class.get_AA(Departure_Airport_Parameters_Data)), font=font_infos)
         AA.place(x=480,y=90)
         Direction = Label(frame_general_info, text="Direction : "+Classe.Departure_Airport_Parameters_Class.get_direction(Departure_Airport_Parameters_Data), font=font_infos)
         Direction.place(x=10,y=130)
+        #What is the phone numer of the airport
         Tel = Label(frame_general_info, text="Téléphone : "+str(int(Classe.Departure_Airport_Parameters_Class.get_tel(Departure_Airport_Parameters_Data))), font=font_infos)
         Tel.place(x=450,y=110)
+        #The email adress of the airport
         Email = Label(frame_general_info, text="E-mail : "+Classe.Departure_Airport_Parameters_Class.get_mail(Departure_Airport_Parameters_Data), font=font_infos)
         Email.place(x=10,y=110)
         AVT = Label(frame_general_info, text="AVT : "+Classe.Departure_Airport_Parameters_Class.get_avt(Departure_Airport_Parameters_Data), font=font_infos)
         AVT.place(x=530,y=130)
-        
+        #______________________________________________________________________
+        #We set the frame that will contain all the pist information about the airport
         frame_pistes_info = LabelFrame(Infos, height=200, text="Pistes", fg='red')
         frame_pistes_info.grid_propagate(0)
         frame_pistes_info.pack(fill="both", expand="no", padx=50)
@@ -737,7 +762,7 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
     
     #We charge and show the picture we want (here the trajectory)
     dicimg = {}
-    im=Image.open("../Databases/Montauban.jpg")
+    im=Image.open("../Databases/Global_Trajectory.jpg")
     #We change the size of the picture in order to fit the size of the canvas
     im = resizeimage.resize_contain(im, [425,325])
     photo = ImageTk.PhotoImage(im) 
@@ -906,12 +931,12 @@ def launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airp
     #==========================================================================
     
     #Button handling the departure airport presentation (map of the airport and weather at this place)
-    Departure_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport de départ', fg='green', command=lambda :callback1(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label)).place(x=150, y=573)
+    Departure_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport de départ', fg='green', command=lambda :Departure_Airport(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label)).place(x=150, y=573)
     
     #Button handling the presentation of the trajectory map
-    Trajectory_Map = Button(Mission_Parameters_2, text = 'Trajectoire', fg='green', command=lambda :callback2(Flight_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit)).place(x=350, y=573)
+    Trajectory_Map = Button(Mission_Parameters_2, text = 'Trajectoire', fg='green', command=lambda :Trajectory(Flight_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit)).place(x=350, y=573)
     
     #Button handling the presentation of the aiprot of arrival and the weather around this point
-    Arrival_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport d''arrivée', fg='green', command=lambda :callback3(Flight_Parameters_Data,Arrival_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label)).place(x=500, y=573)
+    Arrival_Airport_Map = Button(Mission_Parameters_2, text = 'Aéroport d''arrivée', fg='green', command=lambda :Arrival_Airport(Flight_Parameters_Data,Arrival_Airport_Parameters_Data,Weather_departure_t0,Weather_state,Weather_pressure_P,Weather_pressure_t0,Weather_pressure_unit,Weather_temperature_T,Weather_temperature_t0,Weather_temperature_unit,Weather_humidity,Weather_humidity_t0,Weather_humidity_unit,Weather_wind,Weather_wind_t0,Weather_wind_unit,Weather_wind_direction,Weather_wind_direction_t0,Weather_wind_direction_unit,Weather_departure_t3,Weather_departure_t3h,Weather_departure_t3m,Prevision_Weather_state,Prevision_Weather_pressure_P,Prevision_Weather_pressure_t0,Prevision_Weather_pressure_unit,Prevision_Weather_temperature_T,Prevision_Weather_temperature_t0,Prevision_Weather_temperature_unit,Prevision_Weather_humidity,Prevision_Weather_humidity_t0,Prevision_Weather_humidity_unit,Prevision_Weather_wind,Prevision_Weather_wind_t0,Prevision_Weather_wind_unit,Prevision_Weather_wind_direction,Prevision_Weather_wind_direction_t0,Prevision_Weather_wind_direction_unit,Sunrise,Sunrise_time,Sunset,Sunset_time,Weather_visibility,Weather_visibility_t0,Weather_visibility_unit,Weather_visibility_label,Weather_visibility_t0_label,Weather_visibility_unit_label)).place(x=500, y=573)
     
     Mission_Parameters_2.mainloop()

@@ -1,6 +1,9 @@
 #Importation
-import sys
-sys.path.insert(0,'/Users/lancelotribot/documents/spider/Useful_Functions')
+#import sys
+#sys.path.insert(0,'/Users/lancelotribot/documents/spider/Useful_Functions')
+#import Distance
+
+open('../Useful_Functions/Distance.py')
 import Distance
 import math
 from tkinter import *
