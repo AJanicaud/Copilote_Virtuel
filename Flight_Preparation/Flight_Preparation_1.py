@@ -1,3 +1,4 @@
+
 # ________________________________________________________________________________
 #                     COPILOTE VIRTUEL
 #                       Static model
@@ -34,7 +35,7 @@ def callback():
         font_error = tkFont.Font(family='Helvetica', size=24, weight='bold')
         Error_Message = Label(Error, text="Vous n'avez pas rempli toutes les informations nécessaires", font=font_error, fg='red')
         Error_Message.pack()
-    #In the case that the user filled the aircraft with a model that we did not implement, we display an error message
+    #In the case that the user filled pthe aircraft with a model that we did not implement, we display an error message
     elif (a=='Rafale' or b=='A380'):
         #Setting the error message
         Error = Tk()
@@ -52,14 +53,16 @@ def callback():
         #We compute the time of flight
         #Données fichier excel à récupérer pour les positions de départ et d'arrivée aéroports
         Aircraft_Parameters_Data = Classe.Aircraft_Parameters_Class(a)
-        [h0,m0,am0,h,m,am,dis] = Classe.Time(h0,m0,am0,Aircraft_Parameters_Data)
+        Departure_Airport_Parameters_Data = Classe.Departure_Airport_Parameters_Class(c)
+        Arrival_Airport_Parameters_Data = Classe.Arrival_Airport_Parameters_Class(d)
+        [h0,m0,am0,h,m,am,dis] = Classe.Time(h0,m0,am0,Aircraft_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airport_Parameters_Data)
         #We compute the fuel that we will need during the flight
-        f = Classe.Fuel(h0,m0,am0,Aircraft_Parameters_Data)
+        f = Classe.Fuel(h0,m0,am0,Aircraft_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airport_Parameters_Data)
         #We create a class Donnees that collects all the general information concerning the flight
 
         Flight_Parameters_Data = Classe.Flight_Parameters_Class(b,c,d,h0,m0,am0,h,m,am,f,dis)
         #We can launch the second interface
-        Flight_Preparation_2.launch(Flight_Parameters_Data)
+        Flight_Preparation_2.launch(Flight_Parameters_Data,Departure_Airport_Parameters_Data,Arrival_Airport_Parameters_Data)
         
 
 #===============================================================================
@@ -99,7 +102,7 @@ frame_flight.pack(fill="both", expand="no", padx=100)
 
 Aircraft_model = Label(frame_aircraft, text="Modèle de l'avion", font=font_aircraft).place(x=30, y=5)
 #We create the list of all the aircrafts we can use
-Aircraft_List = ["DR400", "Rafale", "A380"]
+Aircraft_List = ["DR400-1", "DR400-2", "DR400-3"]
 #We create the list-down box linked to the aircrafts
 aircraft = StringVar()
 Combo_Aircraft = Combobox(frame_aircraft, values=Aircraft_List, textvariable=aircraft).place(x=190, y=5)
@@ -109,14 +112,14 @@ Crew = Label(frame_aircraft, text="Nombre de personnes à bord", font=font_aircr
 passengers = StringVar()
 s = Spinbox(frame_aircraft, from_=1, to=10, textvariable=passengers, font=font_aircraft).place(x=210, y=37)
 
-#===============================================================================
+#==============================================================================
 
 #Inside the Airport Parameters
 
 Airport_departure = Label(frame_airport, text="Aéroport de départ", font=font_aircraft).place(x=30, y=5)
 Airport_arrival = Label(frame_airport, text="Aéroport d'arrivée", font=font_aircraft).place(x=30, y=40)
 #We create the list of all the airports we can use
-Airport_List = ["Lasbordes", "Gaillac", "Montauban"]
+Airport_List = ["LASBORDES", "GAILLAC", "MONTAUBAN"]
 #We create two list-down boxes (une for the departure and one for the arrival) linked to the airports
 departure = StringVar()
 Combo_Departure = Combobox(frame_airport, values=Airport_List, textvariable=departure).place(x=190, y=5)
@@ -137,7 +140,7 @@ Combo_Minute = Spinbox(frame_flight, from_=0, to=59, textvariable=min, width=3).
 # if (int(min.get())>59):
 #     min.set(0)
 #We create the list-down box in order to specify am or pm time
-Time_List = ["am","pm"]
+Time_List = ["AM","PM"]
 ampm = StringVar()
 Time = Combobox(frame_flight, values=Time_List, textvariable=ampm, width=3).place(x=340, y=3)
 #===============================================================================
